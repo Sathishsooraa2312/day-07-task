@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://restcountries.com/v3.1/all', true)
+        request.send();
+        request.onload = function () {
+            let data = JSON.parse(request.response)
+            console.log(data)
+           // a.get all the countries from the asia region
+
+            data.filter((element) => {
+               if (element.region == "Asia") {
+                  console.log("Asia region:", element.name.common)
+               }
+            })
+
+            //b.get the countries population below 2lakh  
+
+            data.filter((element) => {
+               if (element.population <= 200000) {
+                  console.log("population below 2lakh:", element.name.common)
+
+               }
+            })
+            //c.get name,capital,flag
+
+            data.forEach(element => {
+               console.log("countries name:",element.name.common);
+                console.log("countries capital:",element.capital[0]);
+               console.log("countries flag:",element.flag);
+             })
+
+            //d.print all the countries population by using reduce
+
+            var res = data.map((element)=> element.population)
+            const initialValue = 0;
+               let population = res.reduce((previousValue, currentValue) => previousValue + currentValue,
+                  initialValue);
+                  console.log(population);
+
+
+            //e.print the country which is uses usdollers
+
+            data.filter((element) => {
+                for (let key in element.currencies) {
+                    if (element.currencies[key].name == 'United States dollar') {
+                        console.log(element.name.common);
+
+                    }
+                }
+            })
+
+
+
+
+
+        }
+    </script>
+</body>
+
+</html>
